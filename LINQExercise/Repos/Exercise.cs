@@ -1,164 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
 
-
-namespace LINQExercise
+namespace LINQExercise.Repos
 {
-
-    internal class TableRepo
+    public class Exercise
     {
-        private const string _connectionString = "Data Source=DARIUS-PC\\SQLTUTORIAL;Initial Catalog=TutorialsDB;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
-        public List<Author> Authors { get; set; }
-        public List<Book> Books { get; set; }
-        public List<Genre> Genres { get; set; }
-        public List<Publisher> Publishers { get; set; }
-        public List<People> People { get; set; }
-        public List<Loan> Loans { get; set; }
-        public TableRepo()
-        {
-            Authors = LoadAuthors();
-            Books = LoadBooks();
-            Genres = LoadGenres();
-            Publishers = LoadPublishers();
-            People = LoadPeople();
-            Loans = LoadLoans();
-        }
+        private readonly ITableRepo _tableRepo;
 
-        private List<Author> LoadAuthors()
+        public Exercise(ITableRepo tableRepository)
         {
-            var list = new List<Author>();
-            using (var conn = new SqlConnection(_connectionString))
-            {
-                conn.Open();
-                var cmd = new SqlCommand("SELECT Id, Name FROM Authors", conn);
-                var reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    list.Add(new Author
-                    {
-                        Id = reader.GetInt32(0),
-                        Name = reader.GetString(1)
-                    });
-                }
-            }
-            return list;
-        }
-
-        private List<Book> LoadBooks()
-        {
-            var list = new List<Book>();
-            using (var conn = new SqlConnection(_connectionString))
-            {
-                conn.Open();
-                var cmd = new SqlCommand("SELECT Id, Title, AuthorId, GenreId, PublisherId FROM Books", conn);
-                var reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    list.Add(new Book
-                    {
-                        Id = reader.GetInt32(0),
-                        Title = reader.GetString(1),
-                        AuthorId = reader.GetInt32(2),
-                        GenreId = reader.GetInt32(3),
-                        PublisherId = reader.GetInt32(4)
-                    });
-                }
-            }
-            return list;
-        }
-
-        private List<Genre> LoadGenres()
-        {
-            var list = new List<Genre>();
-            using (var conn = new SqlConnection(_connectionString))
-            {
-                conn.Open();
-                var cmd = new SqlCommand("SELECT Id, Name FROM Genres", conn);
-                var reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    list.Add(new Genre
-                    {
-                        Id = reader.GetInt32(0),
-                        Name = reader.GetString(1)
-                    });
-                }
-            }
-            return list;
-        }
-
-        private List<Publisher> LoadPublishers()
-        {
-            var list = new List<Publisher>();
-            using (var conn = new SqlConnection(_connectionString))
-            {
-                conn.Open();
-                var cmd = new SqlCommand("SELECT Id, Name FROM Publishers", conn);
-                var reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    list.Add(new Publisher
-                    {
-                        Id = reader.GetInt32(0),
-                        Name = reader.GetString(1)
-                    });
-                }
-            }
-            return list;
-        }
-
-        private List<People> LoadPeople()
-        {
-            var list = new List<People>();
-            using (var conn = new SqlConnection(_connectionString))
-            {
-                conn.Open();
-                var cmd = new SqlCommand("SELECT Id, FirstName, LastName, Age FROM People", conn);
-                var reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    list.Add(new People
-                    {
-                        Id = reader.GetInt32(0),
-                        FirstName = reader.GetString(1),
-                        LastName = reader.GetString(2),
-                        Age = reader.GetInt32(3)
-                    });
-                }
-            }
-            return list;
-        }
-
-        private List<Loan> LoadLoans()
-        {
-            var list = new List<Loan>();
-            using (var conn = new SqlConnection(_connectionString))
-            {
-                conn.Open();
-                var cmd = new SqlCommand("SELECT Id, BookId, PersonId, LoanDate, ReturnDate FROM Loans", conn);
-                var reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    list.Add(new Loan
-                    {
-                        Id = reader.GetInt32(0),
-                        BookId = reader.GetInt32(1),
-                        PersonId = reader.GetInt32(2),
-                        LoanDate = reader.GetDateTime(3),
-                        ReturnDate = reader.IsDBNull(4) ? (DateTime?)null : reader.GetDateTime(4)
-                    });
-                }
-            }
-            return list;
+            _tableRepo = tableRepository;
         }
         public void AdultPeople()
         {
-
+            var People = _tableRepo.GetPeople();
             var adutPeope = from person in People
                             where person.Age >= 18
                             select person;
@@ -171,6 +30,7 @@ namespace LINQExercise
 
         public void BookTitles()
         {
+            var Books = _tableRepo.GetBooks();
 
             var bookTitles = from book in Books
                              select book.Title;
@@ -183,6 +43,8 @@ namespace LINQExercise
         }
         public void orderedAuthors()
         {
+            var Authors = _tableRepo.GetAuthors();
+
             var orderedAuthors = from author in Authors
                                  orderby author.Name
                                  select author;
@@ -194,6 +56,9 @@ namespace LINQExercise
 
         public void booksWithSpecificTitle(string value)
         {
+            var Books = _tableRepo.GetBooks();
+
+
             var booksWithTitle = from book in Books
                                  where book.Title.Contains(value)
                                  select book;
@@ -205,6 +70,9 @@ namespace LINQExercise
         }
         public void printPeopleNamesAndAges()
         {
+            var People = _tableRepo.GetPeople();
+
+
             var peopleProjection = from person in People
                                    select new
                                    {
@@ -220,6 +88,9 @@ namespace LINQExercise
         }
         public void groupedBooksByAuthor()
         {
+            var Books = _tableRepo.GetBooks();
+            var Authors = _tableRepo.GetAuthors();
+
             var groupedBooks = from book in Books
                                join author in Authors
                                on book.AuthorId equals author.Id
@@ -240,6 +111,9 @@ namespace LINQExercise
         }
         public void countedBooksByGenre()
         {
+            var Books = _tableRepo.GetBooks();
+            var Genres = _tableRepo.GetGenres();
+
             var countedBooks = from book in Books
                                join genre in Genres
                                on book.GenreId equals genre.Id
@@ -258,6 +132,10 @@ namespace LINQExercise
 
         public void bookNameAuthorGenre()
         {
+            var Books = _tableRepo.GetBooks();
+            var Genres = _tableRepo.GetGenres();
+            var Authors = _tableRepo.GetAuthors();
+
             var bookWithAuthorAndGenre = from book in Books
                                          join author in Authors on book.AuthorId equals author.Id
                                          join genre in Genres on book.GenreId equals genre.Id
@@ -278,6 +156,9 @@ namespace LINQExercise
 
         public void booksWithPublisher()
         {
+            var Books = _tableRepo.GetBooks();
+            var Publishers = _tableRepo.GetPublishers();
+
             var booksWithPublisher = from book in Books
                                      join publisher in Publishers on book.PublisherId equals publisher.Id
                                      select new
@@ -293,6 +174,10 @@ namespace LINQExercise
 
         public void peopleWithAtLeastOneBook()
         {
+            var Books = _tableRepo.GetBooks();
+            var People = _tableRepo.GetPeople();
+            var Loans = _tableRepo.GetLoans();
+
             var poleWithBooks = from person in People
                                 join loan in Loans on person.Id equals loan.PersonId
                                 join book in Books on loan.BookId equals book.Id
@@ -310,6 +195,10 @@ namespace LINQExercise
 
         public void booksOnLoan()
         {
+            var Books = _tableRepo.GetBooks();
+            var People = _tableRepo.GetPeople();
+            var Loans = _tableRepo.GetLoans();
+
             var booksOnLoan = from book in Books
                               join loan in Loans on book.Id equals loan.BookId
                               join person in People on loan.PersonId equals person.Id
@@ -326,6 +215,12 @@ namespace LINQExercise
         }
         public void borrowedBooksWithAuthorAndPerson()
         {
+            var Books = _tableRepo.GetBooks();
+            var People = _tableRepo.GetPeople();
+            var Loans = _tableRepo.GetLoans();
+            var Authors = _tableRepo.GetAuthors();
+
+
             var borrowedBooks = from loan in Loans
                                 join book in Books on loan.BookId equals book.Id
                                 join person in People on loan.PersonId equals person.Id
@@ -343,6 +238,9 @@ namespace LINQExercise
         }
         public void authorsWithBooks()
         {
+            var Books = _tableRepo.GetBooks();
+            var Authors = _tableRepo.GetAuthors();
+
             var authorsWithBooks = from author in Authors
                                    join book in Books on author.Id equals book.AuthorId
                                    group book by author.Name into bookGroup
@@ -358,6 +256,9 @@ namespace LINQExercise
         }
         public void personWithNrOfBooks()
         {
+            var People = _tableRepo.GetPeople();
+            var Loans = _tableRepo.GetLoans();
+
             var personWithBooks = from person in People
                                   join loan in Loans on person.Id equals loan.PersonId
                                   group loan by new { person.FirstName, person.LastName } into personGroup
@@ -374,6 +275,9 @@ namespace LINQExercise
 
         public void neverBorrowedBooks()
         {
+            var Books = _tableRepo.GetBooks();
+            var Loans = _tableRepo.GetLoans();
+
             var neverBorrowedBooks = from book in Books
                                      where !(from loan in Loans
                                              select loan.BookId).Contains(book.Id)
@@ -386,6 +290,9 @@ namespace LINQExercise
 
         public void publishersWithAtLeastTwoBooks()
         {
+            var Books = _tableRepo.GetBooks();
+            var Publishers = _tableRepo.GetPublishers();
+
             var publishersWithTwoBooks = from book in Books
                                          join publisher in Publishers on book.PublisherId equals publisher.Id
                                          group book by publisher.Name into bookGroup
@@ -403,10 +310,14 @@ namespace LINQExercise
 
         public void averageAgePerBook()
         {
+            var Books = _tableRepo.GetBooks();
+            var People = _tableRepo.GetPeople();
+            var Loans = _tableRepo.GetLoans();
+
             var averageAge = from person in People
                              join loan in Loans on person.Id equals loan.PersonId
                              join book in Books on loan.BookId equals book.Id
-                             group person by new { book.Title, book.Id} into bookGroup
+                             group person by new { book.Title, book.Id } into bookGroup
                              select new
                              {
                                  BookTitle = bookGroup.Key.Title,
@@ -420,6 +331,9 @@ namespace LINQExercise
 
         public void booksAndNrOfBurrows()
         {
+            var Books = _tableRepo.GetBooks();
+            var Loans = _tableRepo.GetLoans();
+
             var booksAndBurrows = from book in Books
                                   join loan in Loans on book.Id equals loan.BookId
                                   group loan by book.Title into bookGroup

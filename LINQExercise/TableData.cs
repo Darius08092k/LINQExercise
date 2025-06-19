@@ -34,7 +34,7 @@ namespace LINQExercise
         public string Name { get; set; }
     }
 
-    class People
+    public class People
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

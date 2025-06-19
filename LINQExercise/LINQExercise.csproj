@@ -167,10 +167,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Repos\Exercise.cs" />
+    <Compile Include="Repos\ITableRepo.cs" />
     <Compile Include="TableData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TableRepo.cs" />
+    <Compile Include="Repos\TableRepo.cs" />
     <Compile Include="TutorialsDBDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Azure.Core.Pipeline;
+using LINQExercise.Repos;
 using Microsoft.Data.SqlClient;
 
 namespace LINQExercise
@@ -13,43 +14,44 @@ namespace LINQExercise
 
         static void Main(string[] args)
         {
-            TableRepo repo = new TableRepo();
+            ITableRepo repo = new TableRepo();
+            var Exercise = new Exercise(repo);
             Console.WriteLine("Ex 1:");
-            repo.AdultPeople();
+            Exercise.AdultPeople();
             Console.WriteLine("Ex 2:");
-            repo.BookTitles();
+            Exercise.BookTitles();
             Console.WriteLine("Ex 3:");
-            repo.orderedAuthors();
+            Exercise.orderedAuthors();
             Console.WriteLine("Ex 4:");
-            repo.booksWithSpecificTitle("Harry");
+            Exercise.booksWithSpecificTitle("Harry");
             Console.WriteLine("Ex 5:");
-            repo.printPeopleNamesAndAges();
+            Exercise.printPeopleNamesAndAges();
             Console.WriteLine("Ex 6:");
-            repo.groupedBooksByAuthor();
+            Exercise.groupedBooksByAuthor();
             Console.WriteLine("Ex 7:");
-            repo.countedBooksByGenre();
+            Exercise.countedBooksByGenre();
             Console.WriteLine("Ex 8:");
-            repo.bookNameAuthorGenre();
+            Exercise.bookNameAuthorGenre();
             Console.WriteLine("Ex 9:");
-            repo.booksWithPublisher();
+            Exercise.booksWithPublisher();
             Console.WriteLine("Ex 10:");
-            repo.peopleWithAtLeastOneBook();
+            Exercise.peopleWithAtLeastOneBook();
             Console.WriteLine("Ex 11:");
-            repo.booksOnLoan();
+            Exercise.booksOnLoan();
             Console.WriteLine("Ex 12:");
-            repo.borrowedBooksWithAuthorAndPerson();
+            Exercise.borrowedBooksWithAuthorAndPerson();
             Console.WriteLine("Ex 13:");
-            repo.authorsWithBooks();
+            Exercise.authorsWithBooks();
             Console.WriteLine("Ex 14:");
-            repo.personWithNrOfBooks();
+            Exercise.personWithNrOfBooks();
             Console.WriteLine("Ex 15:");
-            repo.neverBorrowedBooks();
+            Exercise.neverBorrowedBooks();
             Console.WriteLine("Ex 16:");
-            repo.publishersWithAtLeastTwoBooks();
+            Exercise.publishersWithAtLeastTwoBooks();
             Console.WriteLine("Ex 17:");
-            repo.averageAgePerBook();
+            Exercise.averageAgePerBook();
             Console.WriteLine("Ex 18:");
-            repo.booksAndNrOfBurrows();
+            Exercise.booksAndNrOfBurrows();
         }
     }
 }
