@@ -15,7 +15,7 @@ namespace LINQExercise
     {
         private const string _connectionString = "Data Source=DARIUS-PC\\SQLTUTORIAL;Initial Catalog=TutorialsDB;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
 
-        private List<Author> LoadAuthors()
+        public List<Author> GetAuthors()
         {
             var list = new List<Author>();
             using (var conn = new SqlConnection(_connectionString))
@@ -35,7 +35,7 @@ namespace LINQExercise
             return list;
         }
 
-        private List<Book> LoadBooks()
+        public List<Book> GetBooks()
         {
             var list = new List<Book>();
             using (var conn = new SqlConnection(_connectionString))
@@ -58,7 +58,7 @@ namespace LINQExercise
             return list;
         }
 
-        private List<Genre> LoadGenres()
+        public List<Genre> GetGenres()
         {
             var list = new List<Genre>();
             using (var conn = new SqlConnection(_connectionString))
@@ -78,7 +78,7 @@ namespace LINQExercise
             return list;
         }
 
-        private List<Publisher> LoadPublishers()
+        public List<Publisher> GetPublishers()
         {
             var list = new List<Publisher>();
             using (var conn = new SqlConnection(_connectionString))
@@ -98,7 +98,7 @@ namespace LINQExercise
             return list;
         }
 
-        private List<People> LoadPeople()
+        public List<People> GetPeople()
         {
             var list = new List<People>();
             using (var conn = new SqlConnection(_connectionString))
@@ -120,7 +120,7 @@ namespace LINQExercise
             return list;
         }
 
-        private List<Loan> LoadLoans()
+        public List<Loan> GetLoans()
         {
             var list = new List<Loan>();
             using (var conn = new SqlConnection(_connectionString))
@@ -142,6 +142,5 @@ namespace LINQExercise
             }
             return list;
         }
-        
     }
 }

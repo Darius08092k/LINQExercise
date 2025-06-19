@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="TutorialsDB" Class="TutorialsDataContextDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DARIUS-PC\SQLTUTORIAL;Initial Catalog=TutorialsDB;Persist Security Info=True;User ID=sa;Pooling=False;Encrypt=True;Trust Server Certificate=True" SettingsObjectName="LINQExercise.Properties.Settings" SettingsPropertyName="TutorialsDBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Authors" Member="Authors">
+    <Type Name="Author">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Author_Book" Member="Books" ThisKey="Id" OtherKey="AuthorId" Type="Book" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Books" Member="Books">
+    <Type Name="Book">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="AuthorId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GenreId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PublisherId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Book_Loan" Member="Loans" ThisKey="Id" OtherKey="BookId" Type="Loan" />
+      <Association Name="Author_Book" Member="Author" ThisKey="AuthorId" OtherKey="Id" Type="Author" IsForeignKey="true" />
+      <Association Name="Genre_Book" Member="Genre" ThisKey="GenreId" OtherKey="Id" Type="Genre" IsForeignKey="true" />
+      <Association Name="Publisher_Book" Member="Publisher" ThisKey="PublisherId" OtherKey="Id" Type="Publisher" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Genres" Member="Genres">
+    <Type Name="Genre">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Genre_Book" Member="Books" ThisKey="Id" OtherKey="GenreId" Type="Book" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Loans" Member="Loans">
+    <Type Name="Loan">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="BookId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PersonId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LoanDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ReturnDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Book_Loan" Member="Book" ThisKey="BookId" OtherKey="Id" Type="Book" IsForeignKey="true" />
+      <Association Name="People_Loan" Member="People" ThisKey="PersonId" OtherKey="Id" Type="People" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.People" Member="Peoples">
+    <Type Name="People">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Age" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="People_Loan" Member="Loans" ThisKey="Id" OtherKey="PersonId" Type="Loan" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Publishers" Member="Publishers">
+    <Type Name="Publisher">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Publisher_Book" Member="Books" ThisKey="Id" OtherKey="PublisherId" Type="Book" />
+    </Type>
+  </Table>
+</Database>

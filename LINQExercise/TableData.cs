@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LINQExercise
 {
-    public class Book
+    /*public class Book
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -14,15 +14,15 @@ namespace LINQExercise
         public int AuthorId { get; set; }
         public int GenreId { get; set; }
         public int PublisherId { get; set; }
-    }
+    }*/
 
-    public class Author
+    /*public class Author
     {
-        public int Id { get; set; }
+        public int _Id { get; set; }
         public string Name { get; set; }
-    }
+    }*/
 
-    public class Genre
+   /* public class Genre
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -51,7 +51,7 @@ namespace LINQExercise
         public DateTime LoanDate { get; set; }
         public DateTime? ReturnDate { get; set; }
     }
-
+*/
     class TableData
     {
       

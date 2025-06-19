@@ -15,7 +15,8 @@ namespace LINQExercise
         static void Main(string[] args)
         {
             ITableRepo repo = new TableRepo();
-            var Exercise = new Exercise(repo);
+            var context = new TutorialsDataContextDataContext();
+            var Exercise = new Exercise(repo, context);
             Console.WriteLine("Ex 1:");
             Exercise.AdultPeople();
             Console.WriteLine("Ex 2:");
@@ -52,6 +53,11 @@ namespace LINQExercise
             Exercise.averageAgePerBook();
             Console.WriteLine("Ex 18:");
             Exercise.booksAndNrOfBurrows();
+            
+            Console.WriteLine("\nUpdate:");
+            Exercise.UpdateAuthorName(1, "Hello");
+            Exercise.displayAuthors();
+
         }
     }
 }
